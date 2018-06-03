@@ -2,3 +2,17 @@ logging:
   level: INFO
   loggers:
     com.capitalone: DEBUG
+
+jerseyClient:
+  timeout: 5000ms
+  connectionTimeout: 5000ms
+
+  minThreads: 1
+  maxThreads: 128
+  workQueueSize: 8
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
+
+# TODO - I would prefer to maintain a single config.yml long term, but its probably okay for now
+quandlAPIKey: FAKE-KEY-FOR-TESTING

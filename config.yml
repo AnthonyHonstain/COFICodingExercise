@@ -2,3 +2,18 @@ logging:
   level: INFO
   loggers:
     com.capitalone: DEBUG
+
+jerseyClient:
+  timeout: 5000ms
+  connectionTimeout: 5000ms
+
+  minThreads: 1
+  maxThreads: 128
+  workQueueSize: 8
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
+
+# Note - this needs to come from an environment variable
+# https://www.dropwizard.io/1.3.2/docs/manual/core.html#environment-variables
+quandlAPIKey: ${QUANDL_API_KEY}
