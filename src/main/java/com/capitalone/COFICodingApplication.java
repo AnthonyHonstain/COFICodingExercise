@@ -1,5 +1,6 @@
 package com.capitalone;
 
+import com.capitalone.client.QuandlClient;
 import com.capitalone.resources.PricingData;
 import io.dropwizard.Application;
 import io.dropwizard.client.JerseyClientBuilder;
@@ -9,6 +10,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
 import javax.ws.rs.client.Client;
+
 
 public class COFICodingApplication extends Application<COFICodingConfiguration> {
 
@@ -33,10 +35,11 @@ public class COFICodingApplication extends Application<COFICodingConfiguration> 
     public void run(final COFICodingConfiguration configuration,
                     final Environment environment) {
 
-        final Client quandlClient = new JerseyClientBuilder(environment)
+        final Client jerseyClient = new JerseyClientBuilder(environment)
                 .using(configuration.getJerseyClientConfiguration())
                 .build(getName());
+        final QuandlClient quandlClient = new QuandlClient(jerseyClient, configuration.getQuandlAPIKey());
 
-        environment.jersey().register(new PricingData(quandlClient, configuration.getQuandlAPIKey()));
+        environment.jersey().register(new PricingData(quandlClient));
     }
 }
