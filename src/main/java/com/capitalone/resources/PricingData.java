@@ -8,7 +8,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.Function;
 
 
 @Path("/")
@@ -31,6 +33,17 @@ public class PricingData {
     @Timed
     @Path("/prototype")
     public List<DailyStockData> prototype() {
-        return quandlClient.getStockData("GOOGL").constructDailyStockData();
+        final List<DailyStockData> stockData = quandlClient.getStockData("GOOGL").constructDailyStockData();
+
+        calculateAverage(stockData, DailyStockData::getAdjClose);
+        return stockData;
+    }
+
+    public BigDecimal calculateAverage(final List<DailyStockData> stockData,
+                                       Function<DailyStockData, BigDecimal> mapFunction) {
+        BigDecimal result = stockData.stream()
+                .map(mapFunction)
+                .reduce(BigDecimal::add).get();
+        return result.divide(new BigDecimal(stockData.size()), BigDecimal.ROUND_DOWN);
     }
 }

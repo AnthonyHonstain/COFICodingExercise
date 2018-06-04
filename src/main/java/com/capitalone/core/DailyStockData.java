@@ -2,15 +2,16 @@ package com.capitalone.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class DailyStockData {
 
     private String date;
-    private String adjOpen;
-    private String adjClose;
+    private BigDecimal adjOpen;
+    private BigDecimal adjClose;
 
-    public DailyStockData(String date, String adjOpen, String adjClose) {
+    public DailyStockData(String date, BigDecimal adjOpen, BigDecimal adjClose) {
         this.date = date;
         this.adjOpen = adjOpen;
         this.adjClose = adjClose;
@@ -22,12 +23,12 @@ public class DailyStockData {
     }
 
     @JsonProperty("open")
-    public String getAdjOpen() {
+    public BigDecimal getAdjOpen() {
         return adjOpen;
     }
 
     @JsonProperty("close")
-    public String getAdjClose() {
+    public BigDecimal getAdjClose() {
         return adjClose;
     }
 
