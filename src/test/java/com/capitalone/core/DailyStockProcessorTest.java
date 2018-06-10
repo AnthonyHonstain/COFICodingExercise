@@ -39,6 +39,23 @@ public class DailyStockProcessorTest {
     }
 
     @Test
+    public void computeMonthlyAveragesUnexpectedPercision() {
+        final List<DailyStockData> dailyStockData = ImmutableList.of(
+                new DailyStockData("2017-06-30", "81.633978115072", "82.231154253442"),
+                new DailyStockData("2017-06-29", "81.365248852806", "81.086566654901"),
+                new DailyStockData("2017-06-28", "81.733507471467", "82.589459936463")
+        );
+
+        List<StockSummary> response = DailyStockProcessor.computeMonthlyAverages(dailyStockData);
+
+        assertEquals(1, response.size());
+
+        assertEquals("2017-06", response.get(0).getMonth());
+        assertEquals(new BigDecimal("81.57"), response.get(0).getAverageOpen());
+        assertEquals(new BigDecimal("81.96"), response.get(0).getAverageClose());
+    }
+
+    @Test
     public void computeMonthlyAveragesSingleDayInFirstMonthFromList() {
         final List<DailyStockData> dailyStockData = ImmutableList.of(
                 new DailyStockData("2017-07-01", "941.33", "959.31"),

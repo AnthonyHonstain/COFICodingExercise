@@ -9,6 +9,8 @@ import java.util.List;
 
 public class DailyStockProcessor {
 
+    private static final int SCALE = 2;
+
     public static List<StockSummary> computeMonthlyAverages(final List<DailyStockData> stockData) {
 
         final List<StockSummary> result = new ArrayList<>();
@@ -30,8 +32,8 @@ public class DailyStockProcessor {
                 if (count > 0) {
                     result.add(new StockSummary(
                             prevData.getDate().toString("yyyy-MM"),
-                            openSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN),
-                            closeSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN))
+                            openSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN),
+                            closeSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN))
                     );
 
                 }
@@ -54,8 +56,8 @@ public class DailyStockProcessor {
         // Finalize the last record
         result.add(new StockSummary(
                 prevData.getDate().toString("yyyy-MM"),
-                openSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN),
-                closeSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN))
+                openSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN),
+                closeSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN))
         );
 
         return result;
