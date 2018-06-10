@@ -1,24 +1,25 @@
 package com.capitalone.core;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class DailyStockData {
 
-    private String date;
+    private DateTime date;
     private BigDecimal adjOpen;
     private BigDecimal adjClose;
 
-    public DailyStockData(String date, BigDecimal adjOpen, BigDecimal adjClose) {
+    public DailyStockData(DateTime date, BigDecimal adjOpen, BigDecimal adjClose) {
         this.date = date;
         this.adjOpen = adjOpen;
         this.adjClose = adjClose;
     }
 
     @JsonProperty("date")
-    public String getDate() {
+    public DateTime getDate() {
         return date;
     }
 

@@ -2,6 +2,7 @@ package com.capitalone.core.QuandlExternal;
 
 import com.capitalone.core.DailyStockData;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class QuandlResponse {
         List<DailyStockData> dailyStockData = new ArrayList<>();
         for (List<String> rawStockDay: data) {
             dailyStockData.add(new DailyStockData(
-                    rawStockDay.get(indexOfDate),
+                    new DateTime(rawStockDay.get(indexOfDate)),
                     new BigDecimal(rawStockDay.get(indexOfAdjOpen)),
                     new BigDecimal(rawStockDay.get(indexOfAdjClose))
             ));

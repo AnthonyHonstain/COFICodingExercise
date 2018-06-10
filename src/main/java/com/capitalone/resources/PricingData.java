@@ -1,5 +1,6 @@
 package com.capitalone.resources;
 
+import com.capitalone.api.StockSummary;
 import com.capitalone.client.QuandlClient;
 import com.capitalone.core.DailyStockData;
 import com.codahale.metrics.annotation.Timed;
@@ -9,8 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 
 @Path("/")
@@ -32,18 +33,51 @@ public class PricingData {
     @GET
     @Timed
     @Path("/prototype")
-    public List<DailyStockData> prototype() {
+    public List<StockSummary> prototype() {
         final List<DailyStockData> stockData = quandlClient.getStockData("GOOGL").constructDailyStockData();
 
-        calculateAverage(stockData, DailyStockData::getAdjClose);
-        return stockData;
-    }
+        final List<StockSummary> result = new ArrayList<>();
+        int prevMonth = -1;
+        DailyStockData prevData = null;
+        BigDecimal openSum = BigDecimal.ZERO;
+        BigDecimal closeSum = BigDecimal.ZERO;
+        int count = 0;
 
-    public BigDecimal calculateAverage(final List<DailyStockData> stockData,
-                                       Function<DailyStockData, BigDecimal> mapFunction) {
-        BigDecimal result = stockData.stream()
-                .map(mapFunction)
-                .reduce(BigDecimal::add).get();
-        return result.divide(new BigDecimal(stockData.size()), BigDecimal.ROUND_DOWN);
+        for (DailyStockData dailyStockData: stockData) {
+            // We have a different month, so we should start a new average
+            if (dailyStockData.getDate().getMonthOfYear() != prevMonth) {
+
+                if (count > 0) {
+                    result.add(new StockSummary(
+                            prevData.getDate().toString("yyyy-MM"),
+                            openSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN),
+                            closeSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN))
+                    );
+
+                }
+                // Start the new average
+                prevMonth = dailyStockData.getDate().getMonthOfYear();
+                prevData = dailyStockData;
+                openSum = dailyStockData.getAdjOpen();
+                closeSum = dailyStockData.getAdjClose();
+                count = 1;
+            }
+            else {
+                // Increment the existing values since we are on the same month
+                prevMonth = dailyStockData.getDate().getMonthOfYear();
+                prevData = dailyStockData;
+                openSum = openSum.add(dailyStockData.getAdjOpen());
+                closeSum = closeSum.add(dailyStockData.getAdjClose());
+                count += 1;
+            }
+        }
+        // Finalize the last record
+        result.add(new StockSummary(
+                prevData.getDate().toString("yyyy-MM"),
+                openSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN),
+                closeSum.divide(new BigDecimal(count), BigDecimal.ROUND_DOWN))
+        );
+
+        return result;
     }
 }
