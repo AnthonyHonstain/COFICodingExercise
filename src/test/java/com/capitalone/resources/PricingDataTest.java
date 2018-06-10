@@ -6,6 +6,7 @@ import com.capitalone.core.DailyStockData;
 import com.capitalone.core.QuandlExternal.DatasetData;
 import com.capitalone.core.QuandlExternal.QuandlResponse;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,6 +41,7 @@ public class PricingDataTest {
 
     @Test
     public void quandlClientGetStockData() {
+        // TODO - I don't like the layout of logic this test covers, I also don't like that this is where client test is located - move it.
         DatasetData datasetData = new DatasetData(
                 ImmutableList.of("Date", "Adj. Open", "Adj. Close"),
                 ImmutableList.of(
@@ -73,10 +75,18 @@ public class PricingDataTest {
 
         Map<String, List<StockSummary>> response = pricingData.prototype();
 
+        assertEquals(ImmutableSet.of("COF", "GOOGL", "MSFT"), response.keySet());
+
         List<StockSummary> googData = response.get("GOOGL");
         assertEquals(1, googData.size());
         assertEquals("2017-06", googData.get(0).getMonth());
         assertEquals(new BigDecimal("948.66"), googData.get(0).getAverageOpen());
         assertEquals(new BigDecimal("942.83"), googData.get(0).getAverageClose());
+
+        List<StockSummary> cofData = response.get("COF");
+        assertEquals(1, cofData.size());
+        assertEquals("2017-06", cofData.get(0).getMonth());
+        assertEquals(new BigDecimal("948.66"), cofData.get(0).getAverageOpen());
+        assertEquals(new BigDecimal("942.83"), cofData.get(0).getAverageClose());
     }
 }

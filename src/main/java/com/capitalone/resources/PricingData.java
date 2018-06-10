@@ -5,12 +5,14 @@ import com.capitalone.client.QuandlClient;
 import com.capitalone.core.DailyStockData;
 import com.capitalone.core.DailyStockProcessor;
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +37,16 @@ public class PricingData {
     @Timed
     @Path("/prototype")
     public Map<String, List<StockSummary>> prototype() {
-        final String ticker = "GOOGL";
-        final List<DailyStockData> stockData = quandlClient.getStockData(ticker).constructDailyStockData();
+        final List<String> tickerList = ImmutableList.of("COF", "GOOGL", "MSFT");
+        final HashMap<String, List<StockSummary>> resultMap = new HashMap<>();
 
-        final List<StockSummary> result = DailyStockProcessor.computeMonthlyAverages(stockData);
+        for (String ticker: tickerList) {
+            final List<DailyStockData> stockData = quandlClient.getStockData(ticker).constructDailyStockData();
 
-        return ImmutableMap.of(ticker, result);
+            final List<StockSummary> result = DailyStockProcessor.computeMonthlyAverages(stockData);
+
+            resultMap.put(ticker, result);
+        }
+        return resultMap;
     }
 }
