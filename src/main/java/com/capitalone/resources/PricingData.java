@@ -6,7 +6,6 @@ import com.capitalone.core.DailyStockData;
 import com.capitalone.core.DailyStockProcessor;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

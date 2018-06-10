@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 
-public class TestDailyStockProcessor {
+public class DailyStockProcessorTest {
 
     @Test
     public void computeMonthlyAveragesEmpty() {
