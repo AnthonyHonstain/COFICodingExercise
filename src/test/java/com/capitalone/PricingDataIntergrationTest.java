@@ -21,7 +21,7 @@ public class PricingDataIntergrationTest {
 
     @Test
     public void testServiceEndToEndBasic() {
-        Client client = new JerseyClientBuilder(RULE.getEnvironment()).build("test client");
+        Client client = new JerseyClientBuilder(RULE.getEnvironment()).build("computeMonthlyAverages client");
 
         Response response = client.target(
                 String.format("http://localhost:%d/", RULE.getLocalPort()))

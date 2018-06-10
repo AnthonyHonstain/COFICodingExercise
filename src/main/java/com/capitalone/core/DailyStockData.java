@@ -18,6 +18,12 @@ public class DailyStockData {
         this.adjClose = adjClose;
     }
 
+    public DailyStockData(String date, String adjOpen, String adjClose) {
+        this.date = new DateTime(date);
+        this.adjOpen = new BigDecimal(adjOpen);
+        this.adjClose = new BigDecimal(adjClose);
+    }
+
     @JsonProperty("date")
     public DateTime getDate() {
         return date;
