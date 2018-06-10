@@ -12,6 +12,11 @@ public class DailyStockProcessor {
     public static List<StockSummary> computeMonthlyAverages(final List<DailyStockData> stockData) {
 
         final List<StockSummary> result = new ArrayList<>();
+
+        if (stockData.size() == 0) {
+            return result;
+        }
+
         int prevMonth = -1;
         DailyStockData prevData = null;
         BigDecimal openSum = BigDecimal.ZERO;

@@ -13,7 +13,16 @@ import static org.junit.Assert.assertEquals;
 public class TestDailyStockProcessor {
 
     @Test
-    public void getStockDataBasicTest() {
+    public void computeMonthlyAveragesEmpty() {
+        final List<DailyStockData> dailyStockData = ImmutableList.of();
+
+        List<StockSummary> response = DailyStockProcessor.computeMonthlyAverages(dailyStockData);
+
+        assertEquals(0, response.size());
+    }
+
+    @Test
+    public void computeMonthlyAveragesSingleMonth() {
         final List<DailyStockData> dailyStockData = ImmutableList.of(
                 new DailyStockData("2017-06-30", "943.99", "929.68"),
                 new DailyStockData("2017-06-29", "951.35", "937.82"),
@@ -30,7 +39,7 @@ public class TestDailyStockProcessor {
     }
 
     @Test
-    public void getStockDataBasicTestSingleDayInFirstMonthFromList() {
+    public void computeMonthlyAveragesSingleDayInFirstMonthFromList() {
         final List<DailyStockData> dailyStockData = ImmutableList.of(
                 new DailyStockData("2017-07-01", "941.33", "959.31"),
                 new DailyStockData("2017-06-30", "943.99", "929.68"),
@@ -52,7 +61,7 @@ public class TestDailyStockProcessor {
     }
 
     @Test
-    public void getStockDataBasicTestSingleDayInLastMonthFromList() {
+    public void computeMonthlyAveragesSingleDayInLastMonthFromList() {
         final List<DailyStockData> dailyStockData = ImmutableList.of(
                 new DailyStockData("2017-06-30", "943.99", "929.68"),
                 new DailyStockData("2017-06-29", "951.35", "937.82"),
@@ -74,7 +83,7 @@ public class TestDailyStockProcessor {
     }
 
     @Test
-    public void getStockDataThreeMonths() {
+    public void computeMonthlyAveragesForThreeMonths() {
         final List<DailyStockData> dailyStockData = ImmutableList.of(
                 new DailyStockData("2017-07-01", "941.33", "959.31"),
                 new DailyStockData("2017-06-30", "943.99", "929.68"),
