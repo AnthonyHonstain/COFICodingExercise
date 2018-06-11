@@ -1,5 +1,6 @@
 package com.capitalone.core;
 
+import com.capitalone.api.MaxDailyProfit;
 import com.capitalone.api.StockSummary;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 public class DailyStockProcessorTest {
@@ -125,5 +127,38 @@ public class DailyStockProcessorTest {
         assertEquals("2017-05", response.get(2).getMonth());
         assertEquals(new BigDecimal("640.27"), response.get(2).getAverageOpen());
         assertEquals(new BigDecimal("950.16"), response.get(2).getAverageClose());
+    }
+
+    @Test
+    public void computeMaxSingleDayProfitEmpty() {
+        final List<DailyStockData> dailyStockData = ImmutableList.of();
+        MaxDailyProfit response = DailyStockProcessor.computeMaxSingleDayProfit(dailyStockData);
+        assertNull(response);
+    }
+
+    @Test
+    public void computeMaxSingleDayProfitSingle() {
+        final List<DailyStockData> dailyStockData = ImmutableList.of(
+                new DailyStockData("2017-06-30", "943.99", "929.68","950.12001","920.230002")
+        );
+
+        MaxDailyProfit response = DailyStockProcessor.computeMaxSingleDayProfit(dailyStockData);
+
+        assertEquals("2017-06-30", response.getDate());
+        assertEquals(new BigDecimal("29.89"), response.getEstimatedProfit());
+    }
+
+    @Test
+    public void computeMaxSingleDayProfitBasic() {
+        final List<DailyStockData> dailyStockData = ImmutableList.of(
+                new DailyStockData("2017-06-30", "943.99", "929.68","950.12","920.23"),
+                new DailyStockData("2017-06-29", "951.35", "937.82","955.40","920.38"),
+                new DailyStockData("2017-06-28", "950.66", "961.01","960.93","950.11")
+        );
+
+        MaxDailyProfit response = DailyStockProcessor.computeMaxSingleDayProfit(dailyStockData);
+
+        assertEquals("2017-06-29", response.getDate());
+        assertEquals(new BigDecimal("35.02"), response.getEstimatedProfit());
     }
 }

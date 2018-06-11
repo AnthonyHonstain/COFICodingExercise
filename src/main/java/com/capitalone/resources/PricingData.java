@@ -1,5 +1,6 @@
 package com.capitalone.resources;
 
+import com.capitalone.api.MaxDailyProfit;
 import com.capitalone.api.StockSummary;
 import com.capitalone.client.QuandlClient;
 import com.capitalone.core.DailyStockData;
@@ -45,6 +46,23 @@ public class PricingData {
             final List<StockSummary> result = DailyStockProcessor.computeMonthlyAverages(stockData);
 
             resultMap.put(ticker, result);
+        }
+        return resultMap;
+    }
+
+    @GET
+    @Timed
+    @Path("/maxDailyProfit")
+    public Map<String, MaxDailyProfit> maxDailyProfit() {
+        final List<String> tickerList = ImmutableList.of("COF", "GOOGL", "MSFT");
+        final HashMap<String, MaxDailyProfit> resultMap = new HashMap<>();
+
+        for (String ticker: tickerList) {
+            final List<DailyStockData> stockData = quandlClient.getStockData(ticker).constructDailyStockData();
+
+            final MaxDailyProfit maxDailyProfit = DailyStockProcessor.computeMaxSingleDayProfit(stockData);
+
+            resultMap.put(ticker, maxDailyProfit);
         }
         return resultMap;
     }

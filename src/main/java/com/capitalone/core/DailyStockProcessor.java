@@ -1,5 +1,6 @@
 package com.capitalone.core;
 
+import com.capitalone.api.MaxDailyProfit;
 import com.capitalone.api.StockSummary;
 
 import java.math.BigDecimal;
@@ -61,5 +62,23 @@ public class DailyStockProcessor {
         );
 
         return result;
+    }
+
+    public static MaxDailyProfit computeMaxSingleDayProfit(final List<DailyStockData> stockData) {
+
+        if (stockData.size() == 0) {
+            return null;
+        }
+
+        MaxDailyProfit currentMax = null;
+
+        for (DailyStockData dailyStockData: stockData) {
+            BigDecimal currentDaysMax = dailyStockData.getAdjHigh().subtract(dailyStockData.getAdjLow())
+                    .setScale(SCALE,BigDecimal.ROUND_DOWN);
+            if (currentMax == null || currentMax.getEstimatedProfit().compareTo(currentDaysMax) < 0) {
+                currentMax = new MaxDailyProfit(dailyStockData.getDate().toString("yyyy-MM-dd"), currentDaysMax);
+            }
+        }
+        return currentMax;
     }
 }

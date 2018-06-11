@@ -33,14 +33,27 @@ public class QuandlResponse {
         int indexOfDate = columnNames.lastIndexOf("Date");
         int indexOfAdjOpen = columnNames.lastIndexOf("Adj. Open");
         int indexOfAdjClose = columnNames.lastIndexOf("Adj. Close");
+        int indexOfAdjHigh = columnNames.lastIndexOf("Adj. High");
+        int indexOfAdjLow = columnNames.lastIndexOf("Adj. Low");
 
         List<DailyStockData> dailyStockData = new ArrayList<>();
         for (List<String> rawStockDay: data) {
-            dailyStockData.add(new DailyStockData(
-                    new DateTime(rawStockDay.get(indexOfDate)),
-                    new BigDecimal(rawStockDay.get(indexOfAdjOpen)),
-                    new BigDecimal(rawStockDay.get(indexOfAdjClose))
-            ));
+            // TODO - consider switching to a builder pattern, this is not extensible as currently organized
+            if (indexOfAdjHigh == -1 || indexOfAdjLow == -1) {
+                dailyStockData.add(new DailyStockData(
+                        new DateTime(rawStockDay.get(indexOfDate)),
+                        new BigDecimal(rawStockDay.get(indexOfAdjOpen)),
+                        new BigDecimal(rawStockDay.get(indexOfAdjClose))
+                ));
+            } else {
+                dailyStockData.add(new DailyStockData(
+                        new DateTime(rawStockDay.get(indexOfDate)),
+                        new BigDecimal(rawStockDay.get(indexOfAdjOpen)),
+                        new BigDecimal(rawStockDay.get(indexOfAdjClose)),
+                        new BigDecimal(rawStockDay.get(indexOfAdjHigh)),
+                        new BigDecimal(rawStockDay.get(indexOfAdjLow))
+                ));
+            }
         }
         return dailyStockData;
     }
