@@ -1,5 +1,6 @@
 package com.capitalone.resources;
 
+import com.capitalone.api.MaxDailyProfit;
 import com.capitalone.api.StockSummary;
 import com.capitalone.client.QuandlClient;
 import com.capitalone.core.DailyStockData;
@@ -61,7 +62,7 @@ public class PricingDataTest {
     }
 
     @Test
-    public void getStockDataBasicTest() {
+    public void getStockDataBasic() {
         DatasetData datasetData = new DatasetData(
                 ImmutableList.of("Date", "Adj. Open", "Adj. Close"),
                 ImmutableList.of(
@@ -73,7 +74,7 @@ public class PricingDataTest {
 
         when(quandlClient.getStockData(any(String.class))).thenReturn(quandlResponse);
 
-        Map<String, List<StockSummary>> response = pricingData.prototype();
+        Map<String, List<StockSummary>> response = pricingData.averageMonthlyPrice();
 
         assertEquals(ImmutableSet.of("COF", "GOOGL", "MSFT"), response.keySet());
 
@@ -82,11 +83,27 @@ public class PricingDataTest {
         assertEquals("2017-06", googData.get(0).getMonth());
         assertEquals(new BigDecimal("948.66"), googData.get(0).getAverageOpen());
         assertEquals(new BigDecimal("942.83"), googData.get(0).getAverageClose());
+    }
 
-        List<StockSummary> cofData = response.get("COF");
-        assertEquals(1, cofData.size());
-        assertEquals("2017-06", cofData.get(0).getMonth());
-        assertEquals(new BigDecimal("948.66"), cofData.get(0).getAverageOpen());
-        assertEquals(new BigDecimal("942.83"), cofData.get(0).getAverageClose());
+    @Test
+    public void getMaxDailyProfit() {
+        DatasetData datasetData = new DatasetData(
+                ImmutableList.of("Date", "Adj. Open", "Adj. Close","Adj. High", "Adj. Low"),
+                ImmutableList.of(
+                        ImmutableList.of("2017-06-30", "943.99", "929.68", "943.99", "929.68"),
+                        ImmutableList.of("2017-06-29", "951.35", "937.82", "951.35", "937.82"),
+                        ImmutableList.of("2017-06-28", "950.66", "961.01", "950.66", "961.01")
+                ));
+        QuandlResponse quandlResponse = new QuandlResponse(datasetData);
+
+        when(quandlClient.getStockData(any(String.class))).thenReturn(quandlResponse);
+
+        Map<String, MaxDailyProfit> response = pricingData.maxDailyProfit();
+
+        assertEquals(ImmutableSet.of("COF", "GOOGL", "MSFT"), response.keySet());
+
+        MaxDailyProfit googData = response.get("GOOGL");
+        assertEquals("2017-06-30", googData.getDate());
+        assertEquals(new BigDecimal("14.31"), googData.getEstimatedProfit());
     }
 }

@@ -7,6 +7,7 @@ import com.capitalone.core.DailyStockData;
 import com.capitalone.core.DailyStockProcessor;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -21,6 +22,7 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 public class PricingData {
 
+    final private List<String> tickerList = ImmutableList.of("COF", "GOOGL", "MSFT");
     final private QuandlClient quandlClient;
 
     public PricingData(QuandlClient quandlClient) {
@@ -29,15 +31,14 @@ public class PricingData {
 
     @GET
     @Timed
-    public String index() {
-        return "STUB";
+    public Map<String, List<String>> index() {
+        return ImmutableMap.of("Tickers", tickerList);
     }
 
     @GET
     @Timed
-    @Path("/prototype")
-    public Map<String, List<StockSummary>> prototype() {
-        final List<String> tickerList = ImmutableList.of("COF", "GOOGL", "MSFT");
+    @Path("/averageMonthlyPrice")
+    public Map<String, List<StockSummary>> averageMonthlyPrice() {
         final HashMap<String, List<StockSummary>> resultMap = new HashMap<>();
 
         for (String ticker: tickerList) {
@@ -54,7 +55,6 @@ public class PricingData {
     @Timed
     @Path("/maxDailyProfit")
     public Map<String, MaxDailyProfit> maxDailyProfit() {
-        final List<String> tickerList = ImmutableList.of("COF", "GOOGL", "MSFT");
         final HashMap<String, MaxDailyProfit> resultMap = new HashMap<>();
 
         for (String ticker: tickerList) {

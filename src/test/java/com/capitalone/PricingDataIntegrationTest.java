@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
 
 
-public class PricingDataIntergrationTest {
+public class PricingDataIntegrationTest {
 
     @ClassRule
     public static final DropwizardAppRule<COFICodingConfiguration> RULE =

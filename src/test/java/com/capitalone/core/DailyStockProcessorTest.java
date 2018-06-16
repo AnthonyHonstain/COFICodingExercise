@@ -41,7 +41,7 @@ public class DailyStockProcessorTest {
     }
 
     @Test
-    public void computeMonthlyAveragesUnexpectedPercision() {
+    public void computeMonthlyAveragesUnexpectedPrecision() {
         final List<DailyStockData> dailyStockData = ImmutableList.of(
                 new DailyStockData("2017-06-30", "81.633978115072", "82.231154253442"),
                 new DailyStockData("2017-06-29", "81.365248852806", "81.086566654901"),
