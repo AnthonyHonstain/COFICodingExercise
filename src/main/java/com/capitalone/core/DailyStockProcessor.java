@@ -20,41 +20,29 @@ public class DailyStockProcessor {
             return result;
         }
 
-        int prevMonth = -1;
         DailyStockData prevData = null;
         BigDecimal openSum = BigDecimal.ZERO;
         BigDecimal closeSum = BigDecimal.ZERO;
         int count = 0;
 
         for (DailyStockData dailyStockData: stockData) {
-            // We have a different month, so we should start a new average
-            if (dailyStockData.getDate().getMonthOfYear() != prevMonth) {
-
-                if (count > 0) {
-                    result.add(new StockSummary(
-                            prevData.getDate().toString("yyyy-MM"),
-                            openSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN),
-                            closeSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN))
-                    );
-
-                }
-                // Start the new average
-                prevMonth = dailyStockData.getDate().getMonthOfYear();
-                prevData = dailyStockData;
-                openSum = dailyStockData.getAdjOpen();
-                closeSum = dailyStockData.getAdjClose();
-                count = 1;
+            if (count > 0 && dailyStockData.getDate().getMonthOfYear() != prevData.getDate().getMonthOfYear()) {
+                result.add(new StockSummary(
+                        prevData.getDate().toString("yyyy-MM"),
+                        openSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN),
+                        closeSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN))
+                );
+                openSum = BigDecimal.ZERO;
+                closeSum = BigDecimal.ZERO;
+                count = 0;
             }
-            else {
-                // Increment the existing values since we are on the same month
-                prevMonth = dailyStockData.getDate().getMonthOfYear();
-                prevData = dailyStockData;
-                openSum = openSum.add(dailyStockData.getAdjOpen());
-                closeSum = closeSum.add(dailyStockData.getAdjClose());
-                count += 1;
-            }
+
+            prevData = dailyStockData;
+            openSum = openSum.add(dailyStockData.getAdjOpen());
+            closeSum = closeSum.add(dailyStockData.getAdjClose());
+            count += 1;
         }
-        // Finalize the last record
+
         result.add(new StockSummary(
                 prevData.getDate().toString("yyyy-MM"),
                 openSum.divide(new BigDecimal(count), SCALE, BigDecimal.ROUND_DOWN),
