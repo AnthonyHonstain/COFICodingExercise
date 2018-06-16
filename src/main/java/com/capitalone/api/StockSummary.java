@@ -23,12 +23,12 @@ public class StockSummary {
         return month;
     }
 
-    @JsonProperty("avarage_open")
+    @JsonProperty("average_open")
     public BigDecimal getAverageOpen() {
         return averageOpen;
     }
 
-    @JsonProperty("avarage_close")
+    @JsonProperty("average_close")
     public BigDecimal getAverageClose() {
         return averageClose;
     }

@@ -60,97 +60,97 @@ Important Endpoints
     "MSFT": [
         {
             "month": "2017-06",
-            "avarage_open": 69.83,
-            "avarage_close": 69.79
+            "average_open": 69.83,
+            "average_close": 69.79
         },
         {
             "month": "2017-05",
-            "avarage_open": 67.92,
-            "avarage_close": 68.01
+            "average_open": 67.92,
+            "average_close": 68.01
         },
         {
             "month": "2017-04",
-            "avarage_open": 65.18,
-            "avarage_close": 65.12
+            "average_open": 65.18,
+            "average_close": 65.12
         },
         {
             "month": "2017-03",
-            "avarage_open": 63.73,
-            "avarage_close": 63.81
+            "average_open": 63.73,
+            "average_close": 63.81
         },
         {
             "month": "2017-02",
-            "avarage_open": 62.94,
-            "avarage_close": 62.91
+            "average_open": 62.94,
+            "average_close": 62.91
         },
         {
             "month": "2017-01",
-            "avarage_open": 61.81,
-            "avarage_close": 61.81
+            "average_open": 61.81,
+            "average_close": 61.81
         }
     ],
     "GOOGL": [
         {
             "month": "2017-06",
-            "avarage_open": 975.78,
-            "avarage_close": 973.37
+            "average_open": 975.78,
+            "average_close": 973.37
         },
         {
             "month": "2017-05",
-            "avarage_open": 959.59,
-            "avarage_close": 961.65
+            "average_open": 959.59,
+            "average_close": 961.65
         },
         {
             "month": "2017-04",
-            "avarage_open": 860.07,
-            "avarage_close": 861.37
+            "average_open": 860.07,
+            "average_close": 861.37
         },
         {
             "month": "2017-03",
-            "avarage_open": 853.85,
-            "avarage_close": 853.78
+            "average_open": 853.85,
+            "average_close": 853.78
         },
         {
             "month": "2017-02",
-            "avarage_open": 836.15,
-            "avarage_close": 836.75
+            "average_open": 836.15,
+            "average_close": 836.75
         },
         {
             "month": "2017-01",
-            "avarage_open": 829.85,
-            "avarage_close": 830.24
+            "average_open": 829.85,
+            "average_close": 830.24
         }
     ],
     "COF": [
         {
             "month": "2017-06",
-            "avarage_open": 79.72,
-            "avarage_close": 79.95
+            "average_open": 79.72,
+            "average_close": 79.95
         },
         {
             "month": "2017-05",
-            "avarage_open": 80.12,
-            "avarage_close": 79.98
+            "average_open": 80.12,
+            "average_close": 79.98
         },
         {
             "month": "2017-04",
-            "avarage_open": 82.6,
-            "avarage_close": 82.43
+            "average_open": 82.6,
+            "average_close": 82.43
         },
         {
             "month": "2017-03",
-            "avarage_open": 88.4,
-            "avarage_close": 88.06
+            "average_open": 88.4,
+            "average_close": 88.06
         },
         {
             "month": "2017-02",
-            "avarage_open": 88.86,
-            "avarage_close": 89.2
+            "average_open": 88.86,
+            "average_close": 89.2
         },
         {
             "month": "2017-01",
-            "avarage_open": 87.05,
-            "avarage_close": 87.01
+            "average_open": 87.05,
+            "average_close": 87.01
         }
     ]
 }
